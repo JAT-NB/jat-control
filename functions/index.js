@@ -2,7 +2,7 @@
 const {onCall,HttpsError}=require("firebase-functions/v2/https");
 const {initializeApp}=require("firebase-admin/app");
 const {getAuth}=require("firebase-admin/auth");
-const {getFirestore,FieldValue}=require("firebase-admin/firestore");
+const {getFirestore}=require("firebase-admin/firestore");
 initializeApp();
 const PROJECT="jat-vet-pruebas";
 const clean=(s,max)=>typeof s==="string"?s.trim().slice(0,max):"";
@@ -17,7 +17,7 @@ exports.createJatClient=onCall({region:"us-central1",enforceAppCheck:false,maxIn
  let created;
  try{
   created=await getAuth().createUser({email,emailVerified:false,disabled:false});
-  await getFirestore().doc("profiles/"+created.uid).create({label,email,application,plan,expiry,enabled,createdAt:FieldValue.serverTimestamp()});
+  await getFirestore().doc("profiles/"+created.uid).create({label,email,application,plan,expiry,enabled});
   return {uid:created.uid,email};
  }catch(e){
   if(created){try{await getAuth().deleteUser(created.uid)}catch(err){console.error("No se pudo revertir usuario:",created.uid,err)}}
