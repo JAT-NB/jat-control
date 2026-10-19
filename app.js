@@ -6,7 +6,7 @@ const app=initializeApp(config),auth=getAuth(app),db=getFirestore(app),$=id=>doc
 let admin=false,profiles=[],editingUid=null;
 
 const backupCollections=['pets','turns','procedures','services','money','studies','vaccinations','audit'];
-function backupFileName(p){const name=String(p.label||p.email||p.uid).normalize('NFD').replace(/[\\u0300-\\u036f]/g,'').replace(/[^a-zA-Z0-9_-]+/g,'-').replace(/^-+|-+$/g,'').slice(0,55)||'cliente';return name+'-'+p.uid+'.json'}
+function backupFileName(p,day){const name=String(p.label||p.email||'Cliente').normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/[^a-zA-Z0-9_-]+/g,'-').replace(/^-+|-+$/g,'').slice(0,65)||'Cliente';return name+'-JAT-Vet-'+day+'.json'}
 function backupSummary(data){return backupCollections.reduce((sum,key)=>sum+(Array.isArray(data[key])?data[key].length:0),0)}
 async function readClientBackup(uid){
  const root=await getDoc(doc(db,'workspaces',uid));
@@ -33,7 +33,7 @@ async function runAllBackups(){
  const zip=new window.JSZip(),date=new Date(),stamp=date.toISOString().replace(/[:.]/g,'-'),folder=zip.folder('clientes'),results=[];
  try{
   await load();
-  const customers=profiles.filter(p=>!p.application||p.application==='JAT Vet');
+  const customers=profiles.filter(p=>!p.application||p.application==='JAT Vet').sort((a,b)=>String(a.label||a.email||a.uid).localeCompare(String(b.label||b.email||b.uid),'es'));
   if(!customers.length){status.textContent='No hay perfiles JAT Vet para respaldar.';return}
   for(let i=0;i<customers.length;i++){
    if(!admin||!auth.currentUser)throw Error('Se cerró la sesión administrativa');
@@ -42,18 +42,18 @@ async function runAllBackups(){
    try{
     const result=await readClientBackup(p.uid);
     if(result.status==='empty'){
-     results.push({uid:p.uid,label:p.label,status:'sin datos',records:0});
+     results.push({uid:p.uid,label:p.label,email:p.email||'',status:'sin datos',records:0});
      row.innerHTML='<td></td><td>Sin datos guardados</td><td>0</td>';
     }else{
      const records=backupSummary(result.data);
-     const filename=backupFileName(p);
+     let filename=backupFileName(p,date.toISOString().slice(0,10));if(folder.file(filename))filename=filename.replace(/\.json$/,'-'+p.uid.slice(0,8)+'.json');
      folder.file(filename,JSON.stringify(result.data,null,2));
-     results.push({uid:p.uid,label:p.label,status:'correcto',revision:result.revision,records,filename});
+     results.push({uid:p.uid,label:p.label,email:p.email||'',status:'correcto',revision:result.revision,records,filename});
      row.innerHTML='<td></td><td>✓ Respaldado</td><td></td>';
      row.cells[2].textContent=String(records);
     }
    }catch(error){
-    results.push({uid:p.uid,label:p.label,status:'ERROR',error:String(error.message||error)});
+    results.push({uid:p.uid,label:p.label,email:p.email||'',status:'ERROR',error:String(error.message||error)});
     row.innerHTML='<td></td><td>✕ Error de lectura</td><td>—</td>';
    }
    row.cells[0].textContent=p.label||p.email||p.uid;
@@ -62,6 +62,9 @@ async function runAllBackups(){
   const failures=results.filter(x=>x.status==='ERROR');
   const manifest={createdAt:date.toISOString(),application:'JAT Vet V4',type:'copia externa por administrador',complete:failures.length===0,clients:results};
   zip.file('informe-respaldo.json',JSON.stringify(manifest,null,2));
+  const indexRows=[['Cliente','Correo','Estado','Registros','Archivo','UID'],...results.map(x=>[x.label||'',x.email||'',x.status,x.records??'',x.filename||'',x.uid])];
+  const csvCell=value=>'"'+String(value??'').replace(/"/g,'""')+'"';
+  zip.file('INDICE-DE-CLIENTES.csv','\\uFEFF'+indexRows.map(row=>row.map(csvCell).join(';')).join('\\r\\n'));
   zip.file('LEEME.txt','JAT Control - Copia de seguridad privada\\nFecha: '+date.toISOString()+'\\n'+(failures.length?'ATENCION: Hay clientes con errores. El respaldo NO esta completo.':'Lecturas finalizadas sin errores.')+'\\nConservar este ZIP fuera de carpetas publicas.\\n');
   const blob=await zip.generateAsync({type:'blob',compression:'DEFLATE',compressionOptions:{level:5}});
   const url=URL.createObjectURL(blob),link=document.createElement('a');
