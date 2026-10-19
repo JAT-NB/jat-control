@@ -25,6 +25,16 @@
 #dashboard[data-view="home"] .dashgrid .sidecol{align-items:start}
 #dashboard[data-view="home"] .quickgrid{grid-template-columns:repeat(2,minmax(0,1fr))}
 @media(max-width:760px){.sidebar{position:sticky;top:0;height:auto;min-height:0;overflow:visible;z-index:10}.sidebar nav{overflow-x:auto}#dashboard[data-view="home"] .sidecol{grid-template-columns:1fr}#dashboard[data-view="home"] #messages{grid-column:auto}}
+
+/* Menú lateral compacto: una línea por opción, sin alterar navegación */
+@media(min-width:761px){
+.sidebar nav{display:flex;flex-direction:column;gap:3px;margin-top:20px}
+.sidebar .navbtn{display:flex;align-items:center;white-space:nowrap;width:100%;min-height:0;margin:0;padding:9px 11px;font-size:12px;line-height:1.25;border-radius:7px;font-weight:500}
+.sidebar .navbtn.selected{font-weight:650}
+}
+@media(max-width:760px){
+.sidebar .navbtn{white-space:nowrap;min-height:0;margin:0 3px;padding:8px 10px;font-size:12px;line-height:1.2;border-radius:7px}
+}
 </style></head>
 <body><div class='shell'><aside class='sidebar'><h2>JAT <span style='color:#2789ff'>●</span> Control</h2><p>Panel de Administración</p><small>JAT Soluciones Informáticas · V2.0</small><nav><button class='navbtn selected' data-target='home'>⌂ &nbsp; Inicio</button><button class='navbtn' data-target='clients'>♙ &nbsp; Clientes</button><button class='navbtn' data-target='renewals'>▦ &nbsp; Vencimientos</button><button class='navbtn' data-target='stats'>▥ &nbsp; Estadísticas</button><button class='navbtn' data-target='messages'>➤ &nbsp; Mensajes</button><button class='navbtn' data-target='apps'>⚙ &nbsp; Aplicaciones</button><button class='navbtn' data-target='backups'>▣ &nbsp; Copias de seguridad</button><button class='navbtn' data-target='restore'>↶ &nbsp; Restaurar respaldo</button></nav><div class='sidefoot'>JAT Soluciones Informáticas</div></aside><div class='workspace'><header><div><div class="brand">Hola, Nico 👋</div><div class="sub">Acá tenés un resumen de tus clientes y sus planes.</div></div><div class="topright"><span id="adminTag" class="tag hidden">● Administrador autorizado</span><button id="logout" class="ghost hidden">Salir</button></div></header>
 <main><section id="authLoading" class="card login" role="status" aria-live="polite" style="text-align:center"><div class="eyebrow">JAT Control</div><h2 style="margin-top:12px">Verificando acceso…</h2><p class="muted">Un momento, estamos recuperando tu sesión.</p></section><section id="login" class="card login hidden"><div class="eyebrow">Acceso privado</div><h1>Bienvenido a JAT Control</h1><p class="muted">Ingresá con tu cuenta de administrador.</p><form id="loginForm"><label>Correo electrónico<input type="email" id="email" required autocomplete="username"></label><label>Contraseña<input type="password" id="password" required autocomplete="current-password"></label><button type="submit">Ingresar al panel</button></form><p id="loginError" role="alert"></p></section>
