@@ -30,7 +30,7 @@ async function runAllBackups(){
  const button=$('runBackups'),status=$('backupStatus'),body=$('backupResults');
  if(!window.JSZip){status.textContent='No se pudo cargar el generador ZIP. Revisá la conexión y volvé a intentar.';return}
  button.disabled=true;body.replaceChildren();
- const zip=new window.JSZip(),date=new Date(),stamp=date.toISOString().replace(/[:.]/g,'-'),folder=zip.folder('clientes'),results=[];
+ const zip=new window.JSZip(),date=new Date(),parts=Object.fromEntries(new Intl.DateTimeFormat('en-GB',{timeZone:'America/Argentina/Buenos_Aires',year:'numeric',month:'2-digit',day:'2-digit',hour:'2-digit',minute:'2-digit',second:'2-digit',hourCycle:'h23'}).formatToParts(date).filter(x=>x.type!=='literal').map(x=>[x.type,x.value])),localDay=parts.year+'-'+parts.month+'-'+parts.day,stamp=localDay+'_'+parts.hour+'-'+parts.minute+'-'+parts.second,folder=zip.folder('clientes'),results=[];
  try{
   await load();
   const customers=profiles.filter(p=>!p.application||p.application==='JAT Vet').sort((a,b)=>String(a.label||a.email||a.uid).localeCompare(String(b.label||b.email||b.uid),'es'));
@@ -46,7 +46,7 @@ async function runAllBackups(){
      row.innerHTML='<td></td><td>Sin datos guardados</td><td>0</td>';
     }else{
      const records=backupSummary(result.data);
-     let filename=backupFileName(p,date.toISOString().slice(0,10));if(folder.file(filename))filename=filename.replace(/\.json$/,'-'+p.uid.slice(0,8)+'.json');
+     let filename=backupFileName(p,localDay);if(folder.file(filename))filename=filename.replace(/\.json$/,'-'+p.uid.slice(0,8)+'.json');
      folder.file(filename,JSON.stringify(result.data,null,2));
      results.push({uid:p.uid,label:p.label,email:p.email||'',status:'correcto',revision:result.revision,records,filename});
      row.innerHTML='<td></td><td>✓ Respaldado</td><td></td>';
@@ -60,7 +60,7 @@ async function runAllBackups(){
    body.append(row);
   }
   const failures=results.filter(x=>x.status==='ERROR');
-  const manifest={createdAt:date.toISOString(),application:'JAT Vet V4',type:'copia externa por administrador',complete:failures.length===0,clients:results};
+  const manifest={createdAt:date.toISOString(),localDate:localDay,timeZone:'America/Argentina/Buenos_Aires',application:'JAT Vet V4',type:'copia externa por administrador',complete:failures.length===0,clients:results};
   zip.file('informe-respaldo.json',JSON.stringify(manifest,null,2));
   const indexRows=[['Cliente','Correo','Estado','Registros','Archivo','UID'],...results.map(x=>[x.label||'',x.email||'',x.status,x.records??'',x.filename||'',x.uid])];
   const csvCell=value=>'"'+String(value??'').replace(/"/g,'""')+'"';
