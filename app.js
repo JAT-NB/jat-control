@@ -64,7 +64,7 @@ async function runAllBackups(){
   zip.file('informe-respaldo.json',JSON.stringify(manifest,null,2));
   const indexRows=[['Cliente','Correo','Estado','Registros','Archivo','UID'],...results.map(x=>[x.label||'',x.email||'',x.status,x.records??'',x.filename||'',x.uid])];
   const csvCell=value=>'"'+String(value??'').replace(/"/g,'""')+'"';
-  zip.file('INDICE-DE-CLIENTES.csv','\\uFEFF'+indexRows.map(row=>row.map(csvCell).join(';')).join('\\r\\n'));
+  zip.file('INDICE-DE-CLIENTES.csv','\uFEFF'+indexRows.map(row=>row.map(csvCell).join(';')).join('\r\n'));
   zip.file('LEEME.txt','JAT Control - Copia de seguridad privada\\nFecha: '+date.toISOString()+'\\n'+(failures.length?'ATENCION: Hay clientes con errores. El respaldo NO esta completo.':'Lecturas finalizadas sin errores.')+'\\nConservar este ZIP fuera de carpetas publicas.\\n');
   const blob=await zip.generateAsync({type:'blob',compression:'DEFLATE',compressionOptions:{level:5}});
   const url=URL.createObjectURL(blob),link=document.createElement('a');
