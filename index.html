@@ -33,6 +33,32 @@
 #restoreReview{max-height:420px;overflow:auto}
 @media(max-width:900px){#dashboard[data-view="home"] .sidecol{grid-template-columns:1fr}#dashboard[data-view="home"] #messages{grid-column:auto}}
 @media(max-width:760px){.sidebar nav{flex-direction:row;gap:6px;margin-top:8px}.sidebar .navbtn{flex-shrink:0}.workspace header{position:static}.stats{grid-template-columns:repeat(2,minmax(0,1fr))}#dashboard>.row h1{font-size:23px}}
+
+/* JAT Control Premium V2: navegación lateral fija y diseño financiero */
+:root{background:#f2f5fb;color:#192c47}
+.shell{grid-template-columns:252px minmax(0,1fr)}
+.sidebar{position:fixed;inset:0 auto 0 0;width:252px;height:100dvh;min-height:0;overflow-y:auto;z-index:20;background:linear-gradient(180deg,#0b1b33 0%,#122e51 100%);box-shadow:8px 0 30px #10274613;padding:28px 15px}
+.sidebar h2{font-size:25px;letter-spacing:-.8px}.sidebar nav{gap:6px}.sidebar .navbtn{border:1px solid transparent;padding:13px 15px;font-size:14px;border-radius:12px}.sidebar .navbtn:hover{background:#ffffff12}.sidebar .navbtn.selected{background:linear-gradient(95deg,#2375ec,#165bd0);border-color:#ffffff22;box-shadow:0 8px 18px #04183266}
+.workspace{grid-column:2;min-width:0;background:radial-gradient(circle at 100% 0%,#eaf1ff 0%,#f3f6fb 35%,#f3f6fb 100%);min-height:100vh}
+.workspace header{border-bottom:1px solid #e5ebf5;padding:23px 30px;background:#fffffff0}.brand{font-size:21px;letter-spacing:-.4px}
+main{padding:29px 30px;max-width:1500px}
+#dashboard>.row{margin-bottom:23px}#dashboard>.row h1{font-size:29px;font-weight:800;color:#142c50}
+.card{border:1px solid #e5ebf5;border-radius:18px;box-shadow:0 7px 24px #132b4c0a;padding:24px}
+.stat{border-top:0;position:relative;overflow:hidden;min-height:140px}
+.stat:before{content:"";position:absolute;right:-25px;top:-30px;width:110px;height:110px;border-radius:50%;background:#e8f1ff}
+.stat:nth-child(2):before{background:#e5f8ee}.stat:nth-child(3):before{background:#fff6dd}.stat:nth-child(4):before{background:#ffeceb}
+.metric{position:relative;color:#142c50;font-size:37px;font-weight:800}
+.stat .muted{position:relative;font-weight:650;color:#6a7e9a}
+.stats{gap:18px;margin-bottom:24px}
+button{border-radius:11px;background:#1d6be3;box-shadow:0 3px 8px #1267dc15}button.ghost{background:#eef4ff;color:#21538e;box-shadow:none}
+h2{color:#1b3454}.tablewrap{border:1px solid #eaf0f7;border-radius:12px}th{background:#f8faff}tr:hover td{background:#f9fbff}
+input,select{border-radius:11px;border-color:#dce5f1}input:focus,select:focus{outline-color:#c5dcff}
+#dashboard[data-view="home"] .sidecol{grid-template-columns:1fr 1fr}
+#dashboard[data-view="home"] #messages{grid-column:1/-1}
+.quickgrid{grid-template-columns:repeat(4,minmax(0,1fr))}
+.quickgrid button{min-height:74px}
+@media(max-width:1100px){.quickgrid{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:760px){.shell{display:block}.sidebar{position:sticky;top:0;left:0;right:0;width:100%;height:auto;min-height:0;overflow:visible;padding:11px 13px;box-shadow:0 5px 20px #10274622}.sidebar h2{font-size:18px}.sidebar small,.sidebar p,.sidefoot{display:none}.sidebar nav{display:flex;overflow-x:auto;scrollbar-width:thin;gap:5px;margin-top:7px}.sidebar .navbtn{padding:9px 11px;font-size:12px}.workspace{min-height:100vh}.workspace header{padding:14px 16px}main{padding:17px 12px}.stats{gap:10px}.stat{min-height:120px;padding:17px}.metric{font-size:29px}#dashboard>.row h1{font-size:23px}#dashboard[data-view="home"] .sidecol{grid-template-columns:1fr}}
 </style></head>
 <body><div class='shell'><aside class='sidebar'><h2>JAT <span style='color:#2789ff'>●</span> Control</h2><p>Panel de Administración</p><small>JAT Soluciones Informáticas · V2.0</small><nav><button class='navbtn selected' data-target='home'>⌂ &nbsp; Inicio</button><button class='navbtn' data-target='clients'>♙ &nbsp; Clientes</button><button class='navbtn' data-target='renewals'>▦ &nbsp; Vencimientos</button><button class='navbtn' data-target='stats'>▥ &nbsp; Estadísticas</button><button class='navbtn' data-target='messages'>➤ &nbsp; Mensajes</button><button class='navbtn' data-target='apps'>⚙ &nbsp; Aplicaciones</button><button class='navbtn' data-target='backups'>▣ &nbsp; Copias de seguridad</button><button class='navbtn' data-target='restore'>↶ &nbsp; Restaurar respaldo</button></nav><div class='sidefoot'>JAT Soluciones Informáticas</div></aside><div class='workspace'><header><div><div class="brand">Hola, Nico 👋</div><div class="sub">Acá tenés un resumen de tus clientes y sus planes.</div></div><div class="topright"><span id="adminTag" class="tag hidden">● Administrador autorizado</span><button id="logout" class="ghost hidden">Salir</button></div></header>
 <main><section id="login" class="card login"><div class="eyebrow">Acceso privado</div><h1>Bienvenido a JAT Control</h1><p class="muted">Ingresá con tu cuenta de administrador.</p><form id="loginForm"><label>Correo electrónico<input type="email" id="email" required autocomplete="username"></label><label>Contraseña<input type="password" id="password" required autocomplete="current-password"></label><button type="submit">Ingresar al panel</button></form><p id="loginError" role="alert"></p></section>
