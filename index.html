@@ -59,6 +59,56 @@ input,select{border-radius:11px;border-color:#dce5f1}input:focus,select:focus{ou
 .quickgrid button{min-height:74px}
 @media(max-width:1100px){.quickgrid{grid-template-columns:repeat(2,1fr)}}
 @media(max-width:760px){.shell{display:block}.sidebar{position:sticky;top:0;left:0;right:0;width:100%;height:auto;min-height:0;overflow:visible;padding:11px 13px;box-shadow:0 5px 20px #10274622}.sidebar h2{font-size:18px}.sidebar small,.sidebar p,.sidefoot{display:none}.sidebar nav{display:flex;overflow-x:auto;scrollbar-width:thin;gap:5px;margin-top:7px}.sidebar .navbtn{padding:9px 11px;font-size:12px}.workspace{min-height:100vh}.workspace header{padding:14px 16px}main{padding:17px 12px}.stats{gap:10px}.stat{min-height:120px;padding:17px}.metric{font-size:29px}#dashboard>.row h1{font-size:23px}#dashboard[data-view="home"] .sidecol{grid-template-columns:1fr}}
+
+/* JAT Control — Linear-inspired restrained design */
+:root{font-family:Inter,ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif;color:#222338;background:#f8f9fc}
+body{letter-spacing:-.01em}
+.shell{grid-template-columns:228px minmax(0,1fr)}
+.sidebar{width:228px;background:#151620;color:#c4c5d3;padding:24px 12px;box-shadow:none;border-right:1px solid #30303b}
+.sidebar h2{font-size:20px;font-weight:750;letter-spacing:-.8px;padding:0 10px;color:#fafaff}
+.sidebar h2 span{color:#9690ff!important}.sidebar p{padding:0 10px;color:#9898a9;font-size:12px;font-weight:500;margin:8px 0 0}.sidebar small{padding:0 10px;font-size:11px;color:#777989}
+.sidebar nav{margin-top:30px;gap:3px}
+.sidebar .navbtn{color:#b2b3c4;border:0;border-radius:8px;font-size:13px;font-weight:550;padding:11px 12px;box-shadow:none}
+.sidebar .navbtn:hover{background:#292a37;color:#fff}
+.sidebar .navbtn.selected{background:#303044;color:#f5f4ff;box-shadow:none;border:0}
+.sidebar .navbtn:focus-visible{outline:2px solid #a6a1ff}
+.sidebar .sidefoot{background:none;border-top:1px solid #30303d;border-radius:0;color:#77798c;padding:16px 10px}
+.workspace{background:#fafbfe}
+.workspace header{background:#fff;border-bottom:1px solid #ececf2;padding:20px 33px;backdrop-filter:none}
+header .brand{font-size:16px;font-weight:700;letter-spacing:-.3px;color:#242437}
+header .sub{font-size:12px;color:#9395a5}
+.tag{background:#f0eefc;color:#6554a7}
+main{padding:34px 34px;max-width:1450px}
+#dashboard>.row h1{font-size:26px;letter-spacing:-1px;font-weight:760;color:#222338}
+.eyebrow{color:#8886a4;font-size:10px;letter-spacing:1.5px}
+.muted{color:#8a8d9f}
+.card{border:1px solid #e9eaf1;border-radius:12px;box-shadow:0 2px 8px #17172a05;padding:23px;background:#fff}
+.stat{min-height:126px}
+.stat:before{display:none}
+.stat .muted{font-size:12px;font-weight:600;color:#898ca0}
+.metric{font-size:32px;color:#26263b;letter-spacing:-1.5px;margin-top:15px}
+.stats{gap:12px;margin:18px 0 24px}
+h2{font-size:17px;letter-spacing:-.45px;color:#27283d}
+h3{color:#292a40}
+button{background:#6660d9;border-radius:8px;box-shadow:none;font-size:13px;padding:10px 15px}
+button:hover{filter:brightness(.96)}
+button.ghost,.ghost{background:#f2f2f8;color:#5c5b79}
+button.danger{background:#fff0ef;color:#a83232}
+.quickgrid button{min-height:60px}
+.quickgrid .whats{background:#218a6d}
+.quickgrid .purple{background:#6660d9}
+input,select{border-radius:8px;border-color:#e1e2eb;font-size:13px}
+input:focus,select:focus{outline:2px solid #dad7ff;border-color:#8980e8}
+th{background:#fafafe;color:#8b8d9c;font-size:10px}
+td{color:#3e4056}
+tr:hover td{background:#fafaff}
+.tablewrap{border-color:#e9eaf1;border-radius:10px}
+.pill{font-size:11px}
+.notice{background:#f7f7fc;border-color:#e8e8f4;color:#696c83}
+a{color:#625bc9}
+#dashboard[data-view="home"] .sidecol{grid-template-columns:1fr 1fr}
+#dashboard[data-view="home"] #messages{grid-column:1/-1}
+@media(max-width:760px){.shell{display:block}.sidebar{width:100%;padding:11px 12px;background:#181924}.sidebar h2{font-size:17px;padding:0 3px}.sidebar nav{margin-top:9px}.sidebar .navbtn{font-size:12px;padding:9px 11px}.workspace header{padding:15px}.card{padding:17px}main{padding:18px 12px}.metric{font-size:29px}}
 </style></head>
 <body><div class='shell'><aside class='sidebar'><h2>JAT <span style='color:#2789ff'>●</span> Control</h2><p>Panel de Administración</p><small>JAT Soluciones Informáticas · V2.0</small><nav><button class='navbtn selected' data-target='home'>⌂ &nbsp; Inicio</button><button class='navbtn' data-target='clients'>♙ &nbsp; Clientes</button><button class='navbtn' data-target='renewals'>▦ &nbsp; Vencimientos</button><button class='navbtn' data-target='stats'>▥ &nbsp; Estadísticas</button><button class='navbtn' data-target='messages'>➤ &nbsp; Mensajes</button><button class='navbtn' data-target='apps'>⚙ &nbsp; Aplicaciones</button><button class='navbtn' data-target='backups'>▣ &nbsp; Copias de seguridad</button><button class='navbtn' data-target='restore'>↶ &nbsp; Restaurar respaldo</button></nav><div class='sidefoot'>JAT Soluciones Informáticas</div></aside><div class='workspace'><header><div><div class="brand">Hola, Nico 👋</div><div class="sub">Acá tenés un resumen de tus clientes y sus planes.</div></div><div class="topright"><span id="adminTag" class="tag hidden">● Administrador autorizado</span><button id="logout" class="ghost hidden">Salir</button></div></header>
 <main><section id="login" class="card login"><div class="eyebrow">Acceso privado</div><h1>Bienvenido a JAT Control</h1><p class="muted">Ingresá con tu cuenta de administrador.</p><form id="loginForm"><label>Correo electrónico<input type="email" id="email" required autocomplete="username"></label><label>Contraseña<input type="password" id="password" required autocomplete="current-password"></label><button type="submit">Ingresar al panel</button></form><p id="loginError" role="alert"></p></section>
