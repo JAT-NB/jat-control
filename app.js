@@ -4,6 +4,75 @@ import{getFirestore,collection,doc,getDocs,getDoc,setDoc,updateDoc}from'https://
 const config={apiKey:'AIzaSyBsdw3MfmtfXn3aCcCV6_IQzX6v3Qw7Yvs',authDomain:'jat-vet-pruebas.firebaseapp.com',projectId:'jat-vet-pruebas',storageBucket:'jat-vet-pruebas.firebasestorage.app',messagingSenderId:'687038553989',appId:'1:687038553989:web:a34c236cb368fd44d92eec'};
 const app=initializeApp(config),auth=getAuth(app),db=getFirestore(app),$=id=>document.getElementById(id);
 let admin=false,profiles=[],editingUid=null;
+
+const backupCollections=['pets','turns','procedures','services','money','studies','vaccinations','audit'];
+function backupFileName(p){const name=String(p.label||p.email||p.uid).normalize('NFD').replace(/[\\u0300-\\u036f]/g,'').replace(/[^a-zA-Z0-9_-]+/g,'-').replace(/^-+|-+$/g,'').slice(0,55)||'cliente';return name+'-'+p.uid+'.json'}
+function backupSummary(data){return backupCollections.reduce((sum,key)=>sum+(Array.isArray(data[key])?data[key].length:0),0)}
+async function readClientBackup(uid){
+ const root=await getDoc(doc(db,'workspaces',uid));
+ if(!root.exists())return {status:'empty',revision:0,data:null,count:0};
+ const {revision,count}=root.data();
+ if(!Number.isInteger(revision)||revision<1||!Number.isInteger(count)||count<1||count>390)throw Error('Manifiesto inválido');
+ const pieces=[];
+ for(let n=0;n<count;n+=20){
+  const batch=await Promise.all(Array.from({length:Math.min(20,count-n)},(_,i)=>getDoc(doc(db,'workspaces',uid,'chunks',String(n+i)))));
+  for(const chunk of batch){if(!chunk.exists()||typeof chunk.data().payload!=='string')throw Error('Falta un bloque de datos');pieces.push(chunk.data().payload)}
+ }
+ const raw=pieces.join('');
+ const data=JSON.parse(raw);
+ if(!data||typeof data!=='object'||Array.isArray(data)||!backupCollections.every(k=>Array.isArray(data[k])))throw Error('Estructura del respaldo inválida');
+ const after=await getDoc(doc(db,'workspaces',uid));
+ if(!after.exists()||after.data().revision!==revision||after.data().count!==count)throw Error('Los datos cambiaron durante la lectura; volvé a ejecutar el respaldo');
+ return {status:'ok',revision,data,count};
+}
+async function runAllBackups(){
+ if(!admin||!auth.currentUser)return;
+ const button=$('runBackups'),status=$('backupStatus'),body=$('backupResults');
+ if(!window.JSZip){status.textContent='No se pudo cargar el generador ZIP. Revisá la conexión y volvé a intentar.';return}
+ button.disabled=true;body.replaceChildren();
+ const zip=new window.JSZip(),date=new Date(),stamp=date.toISOString().replace(/[:.]/g,'-'),folder=zip.folder('clientes'),results=[];
+ try{
+  await load();
+  const customers=profiles.filter(p=>!p.application||p.application==='JAT Vet');
+  if(!customers.length){status.textContent='No hay perfiles JAT Vet para respaldar.';return}
+  for(let i=0;i<customers.length;i++){
+   if(!admin||!auth.currentUser)throw Error('Se cerró la sesión administrativa');
+   const p=customers[i],row=document.createElement('tr');
+   status.textContent='Leyendo '+(i+1)+' de '+customers.length+': '+(p.label||p.uid);
+   try{
+    const result=await readClientBackup(p.uid);
+    if(result.status==='empty'){
+     results.push({uid:p.uid,label:p.label,status:'sin datos',records:0});
+     row.innerHTML='<td></td><td>Sin datos guardados</td><td>0</td>';
+    }else{
+     const records=backupSummary(result.data);
+     const filename=backupFileName(p);
+     folder.file(filename,JSON.stringify(result.data,null,2));
+     results.push({uid:p.uid,label:p.label,status:'correcto',revision:result.revision,records,filename});
+     row.innerHTML='<td></td><td>✓ Respaldado</td><td></td>';
+     row.cells[2].textContent=String(records);
+    }
+   }catch(error){
+    results.push({uid:p.uid,label:p.label,status:'ERROR',error:String(error.message||error)});
+    row.innerHTML='<td></td><td>✕ Error de lectura</td><td>—</td>';
+   }
+   row.cells[0].textContent=p.label||p.email||p.uid;
+   body.append(row);
+  }
+  const failures=results.filter(x=>x.status==='ERROR');
+  const manifest={createdAt:date.toISOString(),application:'JAT Vet V4',type:'copia externa por administrador',complete:failures.length===0,clients:results};
+  zip.file('informe-respaldo.json',JSON.stringify(manifest,null,2));
+  zip.file('LEEME.txt','JAT Control - Copia de seguridad privada\\nFecha: '+date.toISOString()+'\\n'+(failures.length?'ATENCION: Hay clientes con errores. El respaldo NO esta completo.':'Lecturas finalizadas sin errores.')+'\\nConservar este ZIP fuera de carpetas publicas.\\n');
+  const blob=await zip.generateAsync({type:'blob',compression:'DEFLATE',compressionOptions:{level:5}});
+  const url=URL.createObjectURL(blob),link=document.createElement('a');
+  link.href=url;link.download='JAT-Respaldos-'+stamp+(failures.length?'-INCOMPLETO':'')+'.zip';document.body.append(link);link.click();link.remove();
+  setTimeout(()=>URL.revokeObjectURL(url),60000);
+  status.textContent=failures.length?'ZIP generado con '+failures.length+' errores. Revisá el informe; respaldo INCOMPLETO.':'ZIP generado: '+results.filter(x=>x.status==='correcto').length+' espacios respaldados y '+results.filter(x=>x.status==='sin datos').length+' sin datos. Verificá que el archivo se haya descargado.';
+ }catch(error){status.textContent='No se completó el proceso: '+String(error.message||error)}
+ finally{button.disabled=false}
+}
+$('runBackups').onclick=runAllBackups;
+
 function planStatus(p){if(!p.expiry)return {text:'Sin fecha',type:''};const today=new Date(),local=new Date(today.getFullYear(),today.getMonth(),today.getDate());const match=/^(\d{4})-(\d{2})-(\d{2})$/.exec(p.expiry);if(!match)return {text:'Fecha inválida',type:'warn'};const date=new Date(+match[1],+match[2]-1,+match[3]);if(date.getFullYear()!==+match[1]||date.getMonth()!==+match[2]-1||date.getDate()!==+match[3])return {text:'Fecha inválida',type:'warn'};const days=Math.round((date-local)/86400000);return days<0?{text:'Vencido',type:'expired'}:days<=7?{text:days===0?'Vence hoy':`Por vencer (${days} d)`,type:'warn'}:{text:'Al día',type:''}}
 function formatExpiry(v){const m=/^(\d{4})-(\d{2})-(\d{2})$/.exec(v||'');return m?`${m[3]}/${m[2]}/${m[1]}`:'sin fecha'}
 function messageFor(p){const status=planStatus(p),date=formatExpiry(p.expiry),name=p.label||'cliente';const action=status.type==='expired'?`tu plan ${p.plan||'de JAT Vet'} venció el ${date}`:`tu plan ${p.plan||'de JAT Vet'} vence el ${date}`;return `Hola, ${name}. Te contactamos desde JAT Soluciones Informáticas para recordarte que ${action}. Para coordinar la renovación, respondé a este mensaje. ¡Muchas gracias!`}
