@@ -109,8 +109,77 @@ a{color:#625bc9}
 #dashboard[data-view="home"] .sidecol{grid-template-columns:1fr 1fr}
 #dashboard[data-view="home"] #messages{grid-column:1/-1}
 @media(max-width:760px){.shell{display:block}.sidebar{width:100%;padding:11px 12px;background:#181924}.sidebar h2{font-size:17px;padding:0 3px}.sidebar nav{margin-top:9px}.sidebar .navbtn{font-size:12px;padding:9px 11px}.workspace header{padding:15px}.card{padding:17px}main{padding:18px 12px}.metric{font-size:29px}}
+
+/* JAT CONTROL · BLACK & GOLD PREMIUM */
+:root{font-family:Inter,ui-sans-serif,system-ui,-apple-system,Segoe UI,sans-serif;color:#eae8e2;background:#080b0e;--gold:#d6ac57;--gold-light:#f2d78e;--panel:#11161b;--stroke:#30302b}
+body{background:#080b0e;color:#eae8e2}
+.shell{grid-template-columns:254px minmax(0,1fr)}
+.sidebar{width:254px;background:linear-gradient(180deg,#07090b,#0b0e11 68%,#08090b);border-right:1px solid #54432177;padding:27px 15px;box-shadow:4px 0 25px #0005}
+.sidebar h2{display:flex;align-items:center;gap:8px;font-size:27px;letter-spacing:-1px;color:var(--gold-light);padding:0 8px}
+.sidebar .jatmark{color:#e4b95f;font-size:25px;filter:drop-shadow(0 0 8px #cfa84d44)}
+.sidebar .controlword{font-size:11px;letter-spacing:1.7px;color:#f4eee0;margin-left:2px;align-self:flex-end;padding-bottom:3px}
+.sidebar p{color:#b6a78c;padding:0 9px}.sidebar small{color:#8b8171;padding:0 9px}
+.sidebar nav{gap:7px;margin-top:34px}
+.sidebar .navbtn{display:flex;align-items:center;gap:13px;color:#d0c9bb;font-size:14px;font-weight:550;border:1px solid transparent;padding:13px 15px;border-radius:10px;background:transparent;box-shadow:none}
+.sidebar .navbtn svg{width:19px;height:19px;stroke-width:1.9;flex-shrink:0;color:#c8a55d}
+.sidebar .navbtn:hover{background:#211d16;color:#f5e8ca}
+.sidebar .navbtn.selected{background:linear-gradient(115deg,#f1d58a,#bb8a32);color:#16130c;box-shadow:0 4px 18px #ba8a3633;border-color:#edcc7a}
+.sidebar .navbtn.selected svg{color:#16130c}
+.sidebar .sidefoot{color:#b59b64;background:#15130e;border:1px solid #3a3020;border-radius:12px}
+.workspace{background:radial-gradient(ellipse at 70% 0%,#1b1a15 0%,#0b1014 48%,#090d10 100%);min-height:100vh}
+.workspace header{background:#0b0f12ed;border-bottom:1px solid #302b20;padding:23px 29px;backdrop-filter:blur(12px)}
+header .brand{color:#f3eee4;font-size:22px;font-weight:750}
+header .sub{color:#a39e95}
+.tag{background:#241e12;color:#edc879;border:1px solid #5a4824}
+main{max-width:1600px;padding:30px 26px}
+#dashboard>.row h1{color:#f4eee4;font-size:30px}
+.eyebrow{color:#c6a45f}
+.muted,.sectiondesc{color:#a6a8aa}
+.card{background:linear-gradient(145deg,#161b1e,#0d1216);border:1px solid #36342d;border-radius:17px;box-shadow:0 9px 28px #0003;padding:23px}
+.stat{background:linear-gradient(135deg,#211e17,#10151a 55%,#0d1216);min-height:145px;border:1px solid #4b402b}
+.stat:before{display:none}
+.stat .muted{color:#d0c8b8;font-size:13px}
+.metric{font-size:37px;color:#f3d48b;letter-spacing:-1.2px}
+.stat .small{color:#9b9d9f}
+h2,h3{color:#f2ead9}
+button{background:linear-gradient(110deg,#e9c879,#bf913f);color:#15120b;border:1px solid #d4aa5a;border-radius:10px;box-shadow:none;font-weight:700}
+button:hover{filter:brightness(1.09)}
+button.ghost,.ghost{background:#1c2226;color:#e7c47c;border-color:#50442c}
+button.danger{background:#301c1b;color:#f2a3a0;border-color:#62302d}
+.quickgrid .whats{background:#18382c;color:#9ce1c1;border-color:#32634b}
+.quickgrid .purple{background:#302818;color:#f0cd86;border-color:#63512e}
+input,select{background:#12181d;color:#f0ede7;border:1px solid #45413a;border-radius:10px}
+input::placeholder{color:#8d9194}
+input:focus,select:focus{outline:2px solid #b58b48;border-color:#d7af62}
+label{color:#d7c8a8}
+.tablewrap{border:1px solid #35332d;border-radius:12px}
+table{color:#eae7de}
+th{background:#1a1c1d;color:#d5b977;border-bottom-color:#3d372c}
+td{color:#dedcd6;border-bottom-color:#2c3032}
+tr:hover td{background:#1b211f}
+td strong{color:#f3e8d1}
+.pill{background:#14362c;color:#88dbb4}
+.pill.off{background:#3b261d;color:#e9ac83}
+.pill.warn{background:#3e3218;color:#f2cf7e}
+.pill.expired{background:#402023;color:#f4a2a4}
+.notice{background:#211d15;border-color:#53452a;color:#e2cda1}
+a{color:#e3ba68}
+.app{background:#12181c;border-color:#3a382f}
+.donutinner{background:#151b1f;color:#f1d58a}
+.donutinner small{color:#c0b8a7}
+.legend{color:#d6d3ca}
+.upcomingitem{border-bottom-color:#34312b}
+.upcomingitem span{color:#c2b6a2}
+#restoreReview{background:#161b1f!important;color:#e8d7b7;border-color:#4d422c!important}
+dialog{background:#12171b;color:#e8e4d9;border:1px solid #65502a}
+dialog::backdrop{background:#000b}
+#status,#loginError,#restoreStatus,#backupStatus{color:#e0c58a}
+.footer{color:#a18e6d}
+#dashboard[data-view="home"] .sidecol{grid-template-columns:1fr 1fr}
+#dashboard[data-view="home"] #messages{grid-column:1/-1}
+@media(max-width:760px){.shell{display:block}.sidebar{width:100%;padding:12px;background:#090b0d;border-right:0;border-bottom:1px solid #584626}.sidebar h2{font-size:20px}.sidebar nav{gap:5px;margin-top:10px}.sidebar .navbtn{padding:10px 11px;font-size:12px;gap:6px}.sidebar .navbtn svg{width:15px;height:15px}.workspace header{padding:15px}.card{padding:17px}main{padding:17px 12px}.metric{font-size:30px}}
 </style></head>
-<body><div class='shell'><aside class='sidebar'><h2>JAT <span style='color:#2789ff'>●</span> Control</h2><p>Panel de Administración</p><small>JAT Soluciones Informáticas · V2.0</small><nav><button class='navbtn selected' data-target='home'>⌂ &nbsp; Inicio</button><button class='navbtn' data-target='clients'>♙ &nbsp; Clientes</button><button class='navbtn' data-target='renewals'>▦ &nbsp; Vencimientos</button><button class='navbtn' data-target='stats'>▥ &nbsp; Estadísticas</button><button class='navbtn' data-target='messages'>➤ &nbsp; Mensajes</button><button class='navbtn' data-target='apps'>⚙ &nbsp; Aplicaciones</button><button class='navbtn' data-target='backups'>▣ &nbsp; Copias de seguridad</button><button class='navbtn' data-target='restore'>↶ &nbsp; Restaurar respaldo</button></nav><div class='sidefoot'>JAT Soluciones Informáticas</div></aside><div class='workspace'><header><div><div class="brand">Hola, Nico 👋</div><div class="sub">Acá tenés un resumen de tus clientes y sus planes.</div></div><div class="topright"><span id="adminTag" class="tag hidden">● Administrador autorizado</span><button id="logout" class="ghost hidden">Salir</button></div></header>
+<body><div class='shell'><aside class='sidebar'><h2><span class='jatmark'>◆</span> JAT <span class='controlword'>CONTROL</span></h2><p>Panel de Administración</p><small>JAT Soluciones Informáticas · V2.0</small><nav><button class='navbtn selected' data-target='home'><i data-lucide="house" aria-hidden="true"></i><span>Inicio</span></button><button class='navbtn' data-target='clients'><i data-lucide="users" aria-hidden="true"></i><span>Clientes</span></button><button class='navbtn' data-target='renewals'><i data-lucide="calendar-days" aria-hidden="true"></i><span>Vencimientos</span></button><button class='navbtn' data-target='stats'><i data-lucide="chart-no-axes-combined" aria-hidden="true"></i><span>Estadísticas</span></button><button class='navbtn' data-target='messages'><i data-lucide="message-circle" aria-hidden="true"></i><span>Mensajes</span></button><button class='navbtn' data-target='apps'><i data-lucide="layout-grid" aria-hidden="true"></i><span>Aplicaciones</span></button><button class='navbtn' data-target='backups'><i data-lucide="database-backup" aria-hidden="true"></i><span>Copias de seguridad</span></button><button class='navbtn' data-target='restore'><i data-lucide="history" aria-hidden="true"></i><span>Restauración</span></button></nav><div class='sidefoot'>JAT Soluciones Informáticas</div></aside><div class='workspace'><header><div><div class="brand">Hola, Nico 👋</div><div class="sub">Acá tenés un resumen de tus clientes y sus planes.</div></div><div class="topright"><span id="adminTag" class="tag hidden">● Administrador autorizado</span><button id="logout" class="ghost hidden">Salir</button></div></header>
 <main><section id="login" class="card login"><div class="eyebrow">Acceso privado</div><h1>Bienvenido a JAT Control</h1><p class="muted">Ingresá con tu cuenta de administrador.</p><form id="loginForm"><label>Correo electrónico<input type="email" id="email" required autocomplete="username"></label><label>Contraseña<input type="password" id="password" required autocomplete="current-password"></label><button type="submit">Ingresar al panel</button></form><p id="loginError" role="alert"></p></section>
 <section id="dashboard" class="hidden"><div class="row"><div><div class="eyebrow">Panel general</div><h1>Tu negocio, en un solo lugar</h1><p class="muted sectiondesc">Clientes, aplicaciones y seguimiento comercial.</p></div><button id="newClient">+ Nuevo cliente</button></div>
 <div class="stats" id="home"><div class="card stat"><div class="muted">Clientes totales</div><div class="metric" id="total">—</div><span class="small muted">Perfiles vinculados</span></div><div class="card stat"><div class="muted">Accesos activos</div><div class="metric" id="active">—</div><span class="small muted">Acceso habilitado</span></div><div class="card stat"><div class="muted">Por vencer</div><div class="metric" id="soon">—</div><span class="small muted">Próximos 7 días</span></div><div class="card stat"><div class="muted">Vencidos</div><div class="metric" id="expired">—</div><span class="small muted">Requieren seguimiento</span></div></div>
@@ -118,4 +187,4 @@ a{color:#625bc9}
 <section class="card" id="backups"><div class="row"><div><h2>▣ Copias de seguridad</h2><p class="muted sectiondesc">Descargá en tu computadora un ZIP privado con los datos de cada espacio JAT Vet. No se modifica Firebase.</p></div><button id="runBackups" type="button">⬇ Respaldar todos los clientes</button></div><p class="notice">El ZIP puede contener datos personales y documentos de pacientes. Guardalo en una carpeta privada. No cierres la página durante el proceso. Si un espacio falla, el archivo incluirá un informe de errores y NO se presentará como respaldo completo.</p><p id="backupStatus" role="status" aria-live="polite">Listo para iniciar.</p><div class="tablewrap"><table style="min-width:500px"><thead><tr><th>Cliente</th><th>Resultado</th><th>Registros</th></tr></thead><tbody id="backupResults"><tr><td colspan="3">Todavía no se ejecutaron respaldos.</td></tr></tbody></table></div></section>
 <section class="card" id="restore"><h2>↶ Restauración administrativa</h2><p class="muted sectiondesc">Recuperá registros faltantes de un veterinario desde su JSON, sin reemplazar datos existentes. Solo administradores.</p><div class="formgrid"><label>Veterinario de destino<select id="restoreClient"><option value="">Seleccioná un veterinario</option></select></label><label>Archivo JSON del veterinario<input type="file" id="restoreFile" accept=".json,application/json"></label></div><button type="button" class="ghost" id="reviewRestore">Revisar restauración</button><p id="restoreStatus" role="status" aria-live="polite"></p><pre id="restoreReview" class="hidden" style="white-space:pre-wrap;overflow-wrap:anywhere;background:#f4f7fb;border:1px solid #dae5f2;padding:15px;border-radius:10px"></pre><div id="restoreConfirmBox" class="hidden"><p class="notice">Antes de escribir se descargará una copia de seguridad del estado actual. La restauración solo agrega registros faltantes; si encuentra diferencias con el mismo ID, se detiene sin sobrescribir.</p><label><input id="restoreConfirm" type="checkbox" style="display:inline;width:auto;min-height:auto;margin:0 8px 0 0">Confirmo que seleccioné al veterinario correcto y guardé el archivo de respaldo original.</label><button type="button" id="applyRestore" disabled>Confirmar restauración</button></div></section>
 <section class="card" id="apps"><h2>Aplicaciones de JAT</h2><div class="apps"><div class="app"><div class="row"><strong>🐾 JAT Vet</strong><span class="pill">Disponible</span></div><p class="muted small">Gestión veterinaria a domicilio</p><div class="links"><a href="https://jat-nb.github.io/jatvet/v4/" target="_blank" rel="noopener">Abrir JAT Vet ↗</a></div></div><div class="app"><div class="row"><strong>🏠 JAT Nexo</strong><span class="pill off">Próximamente</span></div><p class="muted small">Gestión inmobiliaria · Integración pendiente</p></div></div></section><div class="footer">JAT Soluciones Informáticas · Panel privado</div></section></main></div></div>
-<dialog id="clientDialog"><div class="dialoginner"><div class="row"><h2 id="dialogTitle">Registrar cliente</h2><button type="button" class="ghost" id="closeDialog">Cerrar</button></div><p class="notice">El cliente debe tener una cuenta existente en Firebase Authentication. Por seguridad, crear usuarios nuevos desde el correo todavía requiere una función de servidor. El UID se obtiene en Firebase → Authentication → Usuarios.</p><form id="profileForm"><div class="formgrid"><label>Nombre o referencia<input id="label" required maxlength="120" placeholder="Ej. Veterinaria Baraggiola"></label><label>Correo del cliente<input type="email" id="clientEmail" placeholder="correo@ejemplo.com"></label><label>Aplicación<select id="clientApp"><option value="JAT Vet">JAT Vet</option></select></label><label>Plan<select id="plan"><option value="Prueba">Prueba</option><option value="Básico">Básico</option><option value="Profesional">Profesional</option></select></label><label>Vencimiento del plan<input id="expiry" type="date"></label><label>UID de Firebase Authentication<input id="uid" required placeholder="Identificador de usuario existente"></label></div><div class="row"><label style="margin:0"><input id="enabled" type="checkbox" checked style="display:inline;width:auto;min-height:auto;margin:0 7px 0 0">Acceso habilitado</label><button id="saveProfile" type="submit">Guardar cliente</button></div></form><p id="dialogStatus" role="alert"></p></div></dialog><script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js" crossorigin="anonymous" referrerpolicy="no-referrer"></script><script type="module" src="./app.js?v=2.3.0"></script></body></html>
+<dialog id="clientDialog"><div class="dialoginner"><div class="row"><h2 id="dialogTitle">Registrar cliente</h2><button type="button" class="ghost" id="closeDialog">Cerrar</button></div><p class="notice">El cliente debe tener una cuenta existente en Firebase Authentication. Por seguridad, crear usuarios nuevos desde el correo todavía requiere una función de servidor. El UID se obtiene en Firebase → Authentication → Usuarios.</p><form id="profileForm"><div class="formgrid"><label>Nombre o referencia<input id="label" required maxlength="120" placeholder="Ej. Veterinaria Baraggiola"></label><label>Correo del cliente<input type="email" id="clientEmail" placeholder="correo@ejemplo.com"></label><label>Aplicación<select id="clientApp"><option value="JAT Vet">JAT Vet</option></select></label><label>Plan<select id="plan"><option value="Prueba">Prueba</option><option value="Básico">Básico</option><option value="Profesional">Profesional</option></select></label><label>Vencimiento del plan<input id="expiry" type="date"></label><label>UID de Firebase Authentication<input id="uid" required placeholder="Identificador de usuario existente"></label></div><div class="row"><label style="margin:0"><input id="enabled" type="checkbox" checked style="display:inline;width:auto;min-height:auto;margin:0 7px 0 0">Acceso habilitado</label><button id="saveProfile" type="submit">Guardar cliente</button></div></form><p id="dialogStatus" role="alert"></p></div></dialog><script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js" crossorigin="anonymous" referrerpolicy="no-referrer"></script><script type="module" src="./app.js?v=2.3.0"></script><script src="https://unpkg.com/lucide@0.468.0/dist/umd/lucide.min.js" defer></script><script>window.addEventListener('load',()=>{if(window.lucide)window.lucide.createIcons()})</script></body></html>
