@@ -208,3 +208,46 @@ function selectView(view){
 }
 document.querySelectorAll('.navbtn').forEach(b=>b.onclick=()=>selectView(b.dataset.target));
 selectView('home');
+
+
+/* QA dashboard: isolated browser-local draft; GitHub remains source of truth. */
+const qaTickets=[
+['JV-001','Editar turnos realizados','Alta',20],
+['JV-002','Turnos realizados no aparecen en Caja y listados','Crítica',21],
+['JV-003','Pantalla incorrecta al regresar del segundo plano','Alta',22],
+['JV-004','Validación de fechas de turnos','Media',23],
+['JV-005','Corrección de turno realizado no persiste','Alta',24],
+['JV-006','Buscar pacientes por nombre','Media',26],
+['JV-007','Cancelar edición abre formulario vacío','Media',25],
+['JV-008','Actualizar ficha vuelve al inicio','Media',27],
+['JV-009','Eliminación de pacientes con historial','Alta',30],
+['JV-010','Archivar y reactivar pacientes','Media',28],
+['JV-011','Campos obligatorios aceptan espacios','Media',29],
+['JV-012','Turnos de hoy plegados al inicio','Baja',31],
+['JV-014','Separar agenda de hoy y pendientes','Media',32],
+['JV-015','Organizar pantalla de turnos','Media',33],
+['JV-016','Icono para corregir turno realizado','Baja',34],
+['JV-019','Eliminar importe duplicado de Vacunas','Crítica',35],
+['JV-020','Seleccionar meses anteriores en reportes','Media',36],
+['JV-021','Botón Atrás sale de la PWA','Alta',37],
+['JV-022','Secciones del inicio plegadas','Baja',38],
+['JV-023','Reducir espacios verticales del inicio','Baja',39],
+['JV-024','Acceso directo a ficha de último paciente','Media',40]
+];
+const qaStorageKey='jat-control-qa-draft-v1';
+let qaOverrides={};
+try{qaOverrides=JSON.parse(localStorage.getItem(qaStorageKey)||'{}')||{}}catch{qaOverrides={}}
+const qaEsc=v=>String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+function qaRender(){
+ const tbody=document.getElementById('qaRows');if(!tbody)return;
+ const state=document.getElementById('qaStatus').value,priority=document.getElementById('qaPriority').value,q=document.getElementById('qaSearch').value.trim().toLocaleLowerCase('es');
+ const filtered=qaTickets.filter(([id,title,p])=>{const o=qaOverrides[id]||{};return(!state||(o.status||'Nuevo')===state)&&(!priority||(o.priority||p)===priority)&&(!q||(id+' '+title).toLocaleLowerCase('es').includes(q))});
+ const states=['Nuevo','En desarrollo','Listo para QA','Rechazado','Aprobado','Publicado'],priorities=['Crítica','Alta','Media','Baja'];
+ tbody.innerHTML=filtered.map(([id,title,p,issue])=>{const o=qaOverrides[id]||{};const selector=(key,values,value)=>'<select aria-label="'+key+' '+id+'" data-qa-id="'+id+'" data-qa-key="'+key+'">'+values.map(v=>'<option '+(v===value?'selected':'')+'>'+qaEsc(v)+'</option>').join('')+'</select>';return '<tr><td><strong>'+id+'</strong></td><td>'+qaEsc(title)+'</td><td>'+selector('priority',priorities,o.priority||p)+'</td><td>'+selector('status',states,o.status||'Nuevo')+'</td><td><a target="_blank" rel="noopener" href="https://github.com/JAT-NB/jatvet/issues/'+issue+'">Issue #'+issue+' ↗</a></td></tr>'}).join('')||'<tr><td colspan="5">No hay tickets con esos filtros.</td></tr>';
+ const total=qaTickets.length,ready=qaTickets.filter(([id])=>qaOverrides[id]?.status==='Listo para QA').length,approved=qaTickets.filter(([id])=>qaOverrides[id]?.status==='Aprobado').length;
+ document.getElementById('qaMetrics').textContent=total+' tickets registrados · '+ready+' listos para QA · '+approved+' aprobados · '+filtered.length+' visibles';
+}
+['qaStatus','qaPriority','qaSearch'].forEach(id=>document.getElementById(id)?.addEventListener('input',qaRender));
+document.getElementById('qaRows')?.addEventListener('change',e=>{const el=e.target.closest('[data-qa-id]');if(!el)return;const id=el.dataset.qaId;qaOverrides[id]={...(qaOverrides[id]||{}),[el.dataset.qaKey]:el.value};try{localStorage.setItem(qaStorageKey,JSON.stringify(qaOverrides))}catch{}qaRender()});
+document.getElementById('qaExport')?.addEventListener('click',()=>{const csv=[['Ticket','Descripción','Prioridad','Estado','GitHub'],...qaTickets.map(([id,title,p,issue])=>[id,title,qaOverrides[id]?.priority||p,qaOverrides[id]?.status||'Nuevo','https://github.com/JAT-NB/jatvet/issues/'+issue])].map(row=>row.map(v=>'"'+String(v).replace(/"/g,'""')+'"').join(';')).join('\r\n');const blob=new Blob(['\uFEFF'+csv],{type:'text/csv;charset=utf-8'}),url=URL.createObjectURL(blob),a=document.createElement('a');a.href=url;a.download='jat-gestion-qa.csv';a.click();setTimeout(()=>URL.revokeObjectURL(url),1000)});
+qaRender();
